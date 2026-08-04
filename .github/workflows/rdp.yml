@@ -1,18 +1,29 @@
-name: Windows RDP Direct
+name: Windows RDP Simple
 
 on: workflow_dispatch
 
 jobs:
-  build:
+  rdp:
     runs-on: windows-latest
     steps:
-    - name: Enable RDP & Password
+    - name: Enable RDP & Setup
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         net user Administrator Password12345! /add
         net localgroup Administrators Administrator /add
 
-    - name: Start Direct Tunnel
+    - name: Start Tunnel & Get IP
       run: |
-        ssh -tt -p 443 -o StrictHostKeyChecking=no -R 0:localhost:3389 a.pinggy.io
+        Invoke-WebRequest https://bin.equinox.io/c/bNyA16gDqcB/ngrok-v3-stable-windows-amd64.zip -OutFile ngrok.zip
+        Expand-Archive ngrok.zip -DestinationPath .
+        .\ngrok.exe config add-authtoken 3HT6fj5BbbcElusU5XCRmJWwBPc_3cUeV8dV4Kmt656jyLTVG
+        Start-Process -NoNewWindow .\ngrok.exe -ArgumentList "tcp 3389"
+        Start-Sleep -Seconds 7
+        $tunnels = (Invoke-RestMethod -Uri "http://localhost:4040/api/tunnels").tunnels
+        Write-Host "=================================================="
+        Write-Host "RDP Address: $($tunnels.public_url)" -ForegroundColor Green
+        Write-Host "Username: Administrator"
+        Write-Host "Password: Password12345!"
+        Write-Host "=================================================="
+        Start-Sleep -Seconds 21600
