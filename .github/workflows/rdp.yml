@@ -1,4 +1,4 @@
-name: Windows Server RDP
+name: Windows RDP Ready
 
 on: workflow_dispatch
 
@@ -6,14 +6,13 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-    - name: Enable RDP & Set Password
+    - name: Enable RDP & Password
       run: |
         Set-ItemProperty -Path 'HKLM:\System\CurrentControlSet\Control\Terminal Server' -Name "fDenyTSConnections" -Value 0
         Enable-NetFirewallRule -DisplayGroup "Remote Desktop"
         net user Administrator Password12345! /add
         net localgroup Administrators Administrator /add
 
-    - name: Setup & Run Playit
+    - name: Get Public IP (Serveo)
       run: |
-        Invoke-WebRequest https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-windows-x86_64.exe -OutFile playit.exe
-        .\playit.exe
+        ssh -o StrictHostKeyChecking=no -R 0:localhost:3389 serveo.net
