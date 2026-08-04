@@ -15,4 +15,4 @@ jobs:
 
     - name: Start Direct Tunnel
       run: |
-        ssh -p 443 -o StrictHostKeyChecking=no -R 0:localhost:3389 a.pinggy.io
+        ssh -tt -p 443 -o StrictHostKeyChecking=no -R 0:localhost:3389 a.pinggy.io
