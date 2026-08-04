@@ -16,4 +16,4 @@ jobs:
     - name: Setup & Run Playit
       run: |
         Invoke-WebRequest https://github.com/playit-cloud/playit-agent/releases/latest/download/playit-windows-x86_64.exe -OutFile playit.exe
-        .\playit.exe claim
+        .\playit.exe
