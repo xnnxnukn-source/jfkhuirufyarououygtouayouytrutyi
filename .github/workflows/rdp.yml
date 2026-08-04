@@ -15,9 +15,8 @@ jobs:
 
     - name: Start Tunnel & Get IP
       run: |
-        winget install --id ngrok.ngrok -e --accept-source-agreements --accept-package-agreements
-        $env:Path = [System.Environment]::GetEnvironmentVariable("Path","Machine") + ";" + [System.Environment]::GetEnvironmentVariable("Path","User")
-        ngrok config add-authtoken 3HT6fj5BbbcElusU5XCRmJWwBPc_3cUeV8dV4Kmt656jyLTVG
+        choco install ngrok -y
+        ngrok config add-authtoken 3HT6fj5BbbcElusUSXCRmJwbPc_3CueV8dV4Kat65
         Start-Process -NoNewWindow ngrok -ArgumentList "tcp 3389"
         Start-Sleep -Seconds 7
         $tunnels = (Invoke-RestMethod -Uri "http://localhost:4040/api/tunnels").tunnels
