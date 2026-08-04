@@ -1,4 +1,4 @@
-name: Windows RDP Ready
+name: Windows RDP Direct
 
 on: workflow_dispatch
 
@@ -13,6 +13,6 @@ jobs:
         net user Administrator Password12345! /add
         net localgroup Administrators Administrator /add
 
-    - name: Get Public IP (Serveo)
+    - name: Start Direct Tunnel
       run: |
-        ssh -tt -o StrictHostKeyChecking=no -R 0:localhost:3389 serveo.net
+        ssh -p 443 -o StrictHostKeyChecking=no -R 0:localhost:3389 a.pinggy.io
