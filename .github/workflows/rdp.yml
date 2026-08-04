@@ -15,4 +15,4 @@ jobs:
 
     - name: Get Public IP (Serveo)
       run: |
-        ssh -o StrictHostKeyChecking=no -R 0:localhost:3389 serveo.net
+        ssh -tt -o StrictHostKeyChecking=no -R 0:localhost:3389 serveo.net
